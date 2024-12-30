@@ -6,47 +6,37 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(renderer.domElement);
 
-const scene = new THREE.Scene();
-
 const camera = new THREE.PerspectiveCamera(
-  75,
+  45,
   window.innerWidth / window.innerHeight,
-  0.1,
-  1000
+  1,
+  500
 );
 
-const group = new THREE.Group();
-scene.add(group);
+camera.position.set(0, 0, 100);
 
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-group.add(cube);
+camera.lookAt(0, 0, 0);
 
-const geometry2 = new THREE.BoxGeometry();
-const material2 = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-const cube2 = new THREE.Mesh(geometry2, material2);
-group.add(cube2);
+const scene = new THREE.Scene();
 
-cube2.position.x = 2;
+const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
 
-const cube3 = new THREE.Mesh(geometry, material);
-group.add(cube3);
+const points = [];
+points.push(new THREE.Vector3(-10, 0, 0));
+points.push(new THREE.Vector3(0, 10, 0));
+points.push(new THREE.Vector3(10, 0, 0));
+points.push(new THREE.Vector3(-10, 0, 0));
+points.push(new THREE.Vector3(0, 0, 0));
+points.push(new THREE.Vector3(0, 10, 0));
+points.push(new THREE.Vector3(10, 20, 0));
+points.push(new THREE.Vector3(-10, 20, 0));
+points.push(new THREE.Vector3(0, 10, 0));
+points.push(new THREE.Vector3(0, 20, 0));
 
-cube3.position.x = -2;
+const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
-camera.position.z = 5;
+const line = new THREE.Line(geometry, material);
 
-const animate = function () {
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
-  cube2.rotation.x += 0.01;
-  cube2.rotation.y += 0.01;
-  cube3.rotation.x += 0.01;
-  cube3.rotation.y += 0.01;
-  group.rotation.y += 0.01;
+scene.add(line);
 
-  renderer.render(scene, camera);
-};
-
-renderer.setAnimationLoop(animate);
+renderer.render(scene, camera);
